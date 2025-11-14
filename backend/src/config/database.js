@@ -36,6 +36,7 @@ export function initDatabase() {
       description TEXT NOT NULL,
       name TEXT NOT NULL,
       file_path TEXT NOT NULL,
+      hash TEXT NOT NULL,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `;

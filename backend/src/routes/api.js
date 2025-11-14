@@ -38,6 +38,8 @@ router.delete('/messages/:id', messageController.deleteById);
 
 //files routes
 router.post('/files', upload.single('file'), filesController.create);
+router.put('/files/:id', upload.single('file'), filesController.update);
+router.delete('/files/:id', filesController.delete);
 router.get('/files',  filesController.getAll);
 
 // Serve uploaded files also under /api/uploads if routed through here (extra safety)

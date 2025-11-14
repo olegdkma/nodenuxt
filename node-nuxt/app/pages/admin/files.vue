@@ -97,9 +97,9 @@ async function handleDelete(fileId: number) {
       method: 'DELETE',
     })
 
-    if (response.success) {
+
       await loadFiles()
-    }
+
   } catch (error) {
     console.error('Error deleting file:', error)
     alert('Failed to delete file. Please try again.')
