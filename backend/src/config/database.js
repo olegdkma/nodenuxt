@@ -21,6 +21,17 @@ export const db = new sqlite3.Database(dbPath, (err) => {
 export function initDatabase() {
   // Create messages table for storing simple text input
   const tables = []
+  const users = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL,
+      password TEXT NOT NULL,
+      roles TEXT NOT NULL,
+    )
+  `;
+  tables.push(users);
+  db.run(`DROP TABLE IF EXISTS users;`)
+
   const createMessagesTable = `
     CREATE TABLE IF NOT EXISTS messages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,7 +40,7 @@ export function initDatabase() {
     )
   `;
   tables.push(createMessagesTable);
-  db.run(`DROP TABLE IF EXISTS files;`)
+  //db.run(`DROP TABLE IF EXISTS files;`)
   const createFilesTable = `
     CREATE TABLE IF NOT EXISTS files (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
