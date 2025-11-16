@@ -10,6 +10,16 @@ function createHash(path) {
     hash.update(buffer)
     return hash.digest('hex')
 }
+function removeFileFromFS(file_path) {
+    const filePath = path.join(process.cwd(), "uploads", file_path);
+    fs.unlink(filePath, function(err){
+        if(err) {
+            console.log(err)
+        } else {
+            console.log(filePath, 'removed')
+        }
+    })
+}
 export const filesController =  {
     async create (req, res) {
         const filePath = path.join(process.cwd(), "uploads", req.file.filename);
@@ -31,8 +41,12 @@ export const filesController =  {
     async delete(req,res) {
         try{
             const id = req.params.id;
+            const currentFile = await File.getById(id)
+
+            removeFileFromFS(currentFile.file_path)
 
             await File.delete(id)
+
             res.status(200).json({l: 'lh'})
         }catch(e) {
             res.status(400).json({err: 1234})
@@ -42,19 +56,21 @@ export const filesController =  {
         try{
             const id = req.params.id;
             const { name, description } = req.body;
-            const file_path = req.file ? req.file.filename : req.body.file_path;
             const currentFile = await File.getById(id)
+            const file_path = req.file ? req.file.filename : currentFile.file_path // req.body.file_path;
+
             let hash = currentFile.hash
-            console.log(req.file)
+
             if(req.file){
                 const filePath = path.join(process.cwd(), "uploads", file_path);
 
                 const newFileHash = createHash(filePath)
                 if(hash !== newFileHash) {
                     hash = newFileHash
+                    removeFileFromFS(currentFile.file_path)
                 }
             }
-            
+            console.log('updted file',req.file)
             const fileUpdated = await File.update({ id, name, description, file_path, hash });
             return res.status(200).json({success:true, data:fileUpdated})
         } catch(err){

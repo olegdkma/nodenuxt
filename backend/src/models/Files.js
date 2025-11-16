@@ -34,18 +34,16 @@ export class File {
         })
     }
     static update(content) {
-        const { id, name, description, file, hash } = content;
+        const { id, name, description, file, hash, file_path } = content;
         console.log('🔍 DEBUG: File.update called with:', content);
 
 
         return new Promise((resolve, reject) => {
-            const file_path = file?.filename;
 
             const sql = 'UPDATE files SET name = ?, description = ?, file_path = ?, hash = ?  WHERE id = ?';
-            console.log('🔍 DEBUG: Executing SQL:', sql);
             console.log('🔍 DEBUG: SQL params:', [name, description, file_path, id, hash]);
             
-            db.run(sql, [name, description, file_path, id, hash], function(err) {
+            db.run(sql, [name, description, file_path, hash, id], function(err) {
                 if(err) {
                     console.log('❌ DEBUG: Database update error:', err);
                     reject(err);
