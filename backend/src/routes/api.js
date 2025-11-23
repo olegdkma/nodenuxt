@@ -6,6 +6,7 @@ import { dirname, join, extname } from 'path';
 import fs from 'fs';
 import { messageController } from '../controllers/messageController.js';
 import { filesController } from '../controllers/filesController.js';
+import { UserController} from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -41,6 +42,8 @@ router.post('/files', upload.single('file'), filesController.create);
 router.put('/files/:id', upload.single('file'), filesController.update);
 router.delete('/files/:id', filesController.delete);
 router.get('/files',  filesController.getAll);
+router.post('/users',  UserController.create);
+router.get('/users/:id',  UserController.getByID);
 
 // Serve uploaded files also under /api/uploads if routed through here (extra safety)
 // router.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
