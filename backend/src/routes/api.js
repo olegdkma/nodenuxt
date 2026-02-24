@@ -7,6 +7,7 @@ import fs from 'fs';
 import { messageController } from '../controllers/messageController.js';
 import { filesController } from '../controllers/filesController.js';
 import { UserController} from "../controllers/userController.js";
+import {authMiddle} from "../middleware/authMiddle.js";
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ const upload = multer({ storage });
 
 // Message routes
 router.post('/messages', messageController.create);
-router.get('/messages', messageController.getAll);
+router.get('/messages',authMiddle, messageController.getAll);
 router.get('/messages/:id', messageController.getById);
 router.delete('/messages/:id', messageController.deleteById);
 

@@ -117,7 +117,9 @@ async function addMessage() {
 async function loadMessages() {
   isLoadingMessages.value = true
   try {
-    const response = await $fetch<{ success: boolean; data: Message[] }>(`${apiBase}/api/messages`)
+    const response = await $fetch<{ success: boolean; data: Message[] }>(`${apiBase}/api/messages`, {
+      credentials: "include"
+    })
     if (response.success) {
       messages.value = response.data
     }

@@ -21,6 +21,23 @@ export const db = new sqlite3.Database(dbPath, (err) => {
 export async function initDatabase() {
   // Create messages table for storing simple text input
   const tables = []
+  const access_token = `
+    CREATE TABLE IF NOT EXISTS access_tokens (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       access_token TEXT NOT NULL
+    
+    )
+  `;
+  const refresh_token = `
+    CREATE TABLE IF NOT EXISTS refresh_tokens (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       refresh_token TEXT NOT NULL
+    
+    )
+  `;
+  tables.push(access_token);
+  tables.push(refresh_token);
+
   const users = `
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

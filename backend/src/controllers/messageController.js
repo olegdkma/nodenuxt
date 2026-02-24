@@ -29,6 +29,7 @@ export const messageController = {
   // Get all messages
   async getAll(req, res) {
     try {
+      console.log(req.user, 121312123)
       const messages = await Message.findAll();
       res.json({
         success: true,
