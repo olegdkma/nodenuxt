@@ -34,9 +34,12 @@ const upload = multer({ storage });
 
 // Message routes
 router.post('/messages', messageController.create);
+router.post('/login', UserController.login);
+router.post('/log-out', UserController.logOut);
 router.get('/messages',authMiddle, messageController.getAll);
 router.get('/messages/:id', messageController.getById);
 router.delete('/messages/:id', messageController.deleteById);
+router.post('/refresh', UserController.refreshToken);
 
 //files routes
 router.post('/files', upload.single('file'), filesController.create);

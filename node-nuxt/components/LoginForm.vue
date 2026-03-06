@@ -54,6 +54,8 @@
 </template>
 
 <script setup lang="ts">
+import {customFetch} from "~~/plugins/api";
+
 const emit = defineEmits<{
   (event: 'switch-to-register'): void
   (event: 'login-success'): void
@@ -68,16 +70,16 @@ interface LoginFormState {
 }
 
 const form = ref<LoginFormState>({
-  email: '',
-  password: '',
+  email: 'old@gmail.com',
+  password: '123456',
 })
 
 const isLoading = ref(false)
-
+const router = useRouter()
 async function handleLogin() {
   isLoading.value = true
   try {
-    const response = await $fetch<{ success: boolean; token?: string }>(`${apiBase}/api/auth/login`, {
+    const response = await customFetch<{ success: boolean; token?: string }>(`${apiBase}/api/login`, {
       method: 'POST',
       body: {
         email: form.value.email,
@@ -85,19 +87,10 @@ async function handleLogin() {
       },
     })
 
-    if (response.success && response.token) {
-      // Store token (you might want to use a composable or pinia store)
-      if (process.client) {
-        localStorage.setItem('auth_token', response.token)
-      }
-      emit('login-success')
-    } else {
-      alert('Invalid email or password. Please try again.')
-    }
+    router.push('/')
   } catch (error: any) {
     console.error('Error logging in:', error)
     const errorMessage = error.data?.message || error.message || 'Failed to login. Please try again.'
-    alert(errorMessage)
   } finally {
     isLoading.value = false
   }

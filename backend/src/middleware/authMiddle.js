@@ -14,6 +14,9 @@ console.log(decoded)
         next()
 
     }catch (e) {
+        if (e.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'expired' });
+        }
         console.log(e)
         return res.status(500).json({error: 'Server error'})
     }

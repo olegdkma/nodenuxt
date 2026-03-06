@@ -20,6 +20,7 @@ export const db = new sqlite3.Database(dbPath, (err) => {
 // Initialize database tables
 export async function initDatabase() {
   // Create messages table for storing simple text input
+  //await db.run(`DROP TABLE IF EXISTS refresh_tokens;`)
   const tables = []
   const access_token = `
     CREATE TABLE IF NOT EXISTS access_tokens (
@@ -31,7 +32,8 @@ export async function initDatabase() {
   const refresh_token = `
     CREATE TABLE IF NOT EXISTS refresh_tokens (
        id INTEGER PRIMARY KEY AUTOINCREMENT,
-       refresh_token TEXT NOT NULL
+       refresh_token TEXT NOT NULL,
+       user_id INTEGER NOT NULL
     
     )
   `;

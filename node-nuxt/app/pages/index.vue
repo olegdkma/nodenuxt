@@ -65,6 +65,8 @@
 </template>
 
  <script setup lang="ts">
+import {customFetch} from "~~/plugins/api";
+
 interface Message {
   id: number
   content: string
@@ -88,7 +90,7 @@ const isLoadingMessages = ref(false)
 const files = ref<FileData[]>([])
 
 onMounted(() => {
-  // loadMessages()
+   loadMessages()
   // getFiles()
 })
 
@@ -108,7 +110,7 @@ async function addMessage() {
     }
   } catch (error) {
     console.error('Error adding message:', error)
-    alert('Failed to add message. Please try again.')
+    console.log('Failed to add message. Please try again.')
   } finally {
     isLoading.value = false
   }
@@ -117,7 +119,7 @@ async function addMessage() {
 async function loadMessages() {
   isLoadingMessages.value = true
   try {
-    const response = await $fetch<{ success: boolean; data: Message[] }>(`${apiBase}/api/messages`, {
+    const response = await customFetch<{ success: boolean; data: Message[] }>(`${apiBase}/api/messages`, {
       credentials: "include"
     })
     if (response.success) {
@@ -125,7 +127,7 @@ async function loadMessages() {
     }
   } catch (error) {
     console.error('Error loading messages:', error)
-    alert('Failed to load messages. Please try again.')
+    console.log('Failed to load messages. Please try again.')
   } finally {
     isLoadingMessages.value = false
   }
@@ -144,7 +146,7 @@ async function deleteMessage(id: number) {
     }
   } catch (error) {
     console.error('Error deleting message:', error)
-    alert('Failed to delete message. Please try again.')
+    console.log('Failed to delete message. Please try again.')
   }
 }
 
@@ -156,7 +158,7 @@ async function getFiles() {
     }
   } catch (error) {
     console.error('Error loading files:', error)
-    alert('Failed to load files. Please try again.')
+    console.log('Failed to load files. Please try again.')
   }
 }
 
